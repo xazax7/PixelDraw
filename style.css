@@ -1,0 +1,16 @@
+.palette {
+   width:100%;
+}
+.color {
+   height:50px;
+   width:50px;
+}
+.red {
+   background: red;
+}
+.blue {
+   background: blue;
+}
+.pink {
+   background: pink;
+}

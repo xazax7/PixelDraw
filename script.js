@@ -17,31 +17,62 @@
 //Create a variable containing all the "pixels", or cells to draw on
 var allPixels = document.getElementsByClassName("space");
 
-//The user's current selected color. Set to red until palette functionality is set up.
-var currentColor = "red";
+//The user's current selected color.
+var currentColor = "";
 
 //For each pixel/cell,
 for (i = 0; i < allPixels.length; i++) {
    //Listen for when the user clicks on it,
-   allPixels[i].addEventListener("click", function() {
+   allPixels[i].addEventListener("mousemove", function() {
       //Alert the user of the clicked pixel's ID
-      alert(this.id);
-      //Style this element's background color to the user's current color
-      this.style.backgroundColor = currentColor;
+      //alert(this.id);
+      //If the user has their mouse button down,
+      if(drawing == 1) {
+         //Style this element's background color to the user's current color
+         this.style.backgroundColor = currentColor;
+      }
    })
 }
 
 var allColors = document.getElementsByClassName("color");
 
 for (i = 0; i < allColors.length; i++) {
-   allColors[i].addEventListener("click", function() {
+   allColors[i].addEventListener("mousedown", function() {
       //Find the background color of clicked element.
       //DOES NOT WORK.
-      console.log(this.style.backgroundColor);
-      //Googled "return background color of element javascript". Find other's are not able to do it this way. One stackoverflow user says "style only gets inline styles. Have a look at getComputedStyle". 
+      //console.log(this.style.backgroundColor);
+      //Googled "return background color of element javascript". Find other coders are not able to do it this way. One stackoverflow user says "style only gets inline styles. Have a look at getComputedStyle". 
       //getComputedStyle retrieves the current color -after- CSS stylings from multiple sources
-      console.log(getComputedStyle(this, null).getPropertyValue("background-color"));
+      //console.log(getComputedStyle(this, null).getPropertyValue("background-color"));
       //Found out I can shorten it by removing .getPropertyValue() and replacing with .backgroundColor. After reading about it, not entirely sure how they are different, perhaps .getPropertyValue is more precise in some cases?
-      console.log(getComputedStyle(this, null).backgroundColor);
+      //console.log(getComputedStyle(this, null).backgroundColor);
+      //Create variable containing this element's background color
+      var newColor = getComputedStyle(this, null).backgroundColor;
+      //Update currentColor value
+      currentColor = newColor;
+      //Check to see if currentColor is updated
+      console.log(currentColor);
    })
 }
+
+//Third Step: I notice that the 'pixel's only change on a CLICK, when I want it to listen ONLY if the user has their left MOUSE BUTTON DOWN. replace "click" with "mousedown" for the necessarily addEventListener functions.
+   //I noticed that changing it from "click" to "mousedown", it didn't seem to work. I still have it set to alerting the user on mouse click, so I'll turn that off to see if it works.
+   //Still doesn't work as I intended. It's checking if I press mousedown- when I want to check if I already /have/ my mousedown as I enter the element.
+   //I found mousemove, which I will replace mousedown with.
+   //It works only as it reads "on mouse movement over element". I only want it to listen if: user moves mouse over element WHILE mouse button is down.
+   //After looking through different mouse events, none of them seem to do what I want, but I can combine mousedown and mousemove to do this.
+//Idea: Create variable 'drawing'. If the user presses the mouse button (mousedown) down anywhere on the drawing board, set 'drawing' to 1. If the user is not clicking (mouseup), set 'drawing' to 0.
+   //This way, it's possible to check if the user mouses over a Pixel while their mouse button is held down, in order to color it.
+   //Link below contains code doing what I want
+   //https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event
+
+var board = document.getElementsByClassName("board")[0];
+var drawing = 0;
+board.addEventListener("mousedown", function() {
+   drawing = 1;
+})
+board.addEventListener("mouseup", function() {
+   drawing = 0;
+})
+
+   //Now I need to check if (drawing == 1) when I mouseover the pixel/cell. Updated Pixel/cell eventListener

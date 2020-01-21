@@ -1,9 +1,11 @@
 .palette {
-   width:100%;
+   
 }
 .color {
+   display:inline-block;
    height:50px;
    width:50px;
+   border: 2px solid black;
 }
 .red {
    background: red;
@@ -13,4 +15,14 @@
 }
 .pink {
    background: pink;
+}
+
+.board {
+}
+.space {
+   background: grey;
+   height:50px;
+   width:50px;
+   margin:1px;
+   display:inline-block;
 }

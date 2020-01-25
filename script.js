@@ -14,49 +14,42 @@
       //Chose #1. Seems the simplest and safest.
 
 
-//Create a variable containing all the "pixels", or cells to draw on
+//Create a variable containing all the "Pixels", or cells to be drawn on
 var allPixels = document.getElementsByClassName("space");
 
-//The user's current selected color.
+//Create variable to contain the user's current selected color.
 var currentColor = "";
 
 //For each pixel/cell,
 for (i = 0; i < allPixels.length; i++) {
-   //Listen for when the user clicks on it,
+   //Listen for if the user presses their mouse down on a Pixel, color it
+   allPixels[i].addEventListener("mousedown", function() {
+      this.style.backgroundColor = currentColor;
+   })
+   //If the user moves their cursor over the Pixel,
    allPixels[i].addEventListener("mousemove", function() {
-      //Alert the user of the clicked pixel's ID
-      //alert(this.id);
       //If the user has their mouse button down,
       if(drawing == 1) {
-         //Style this element's background color to the user's current color
+         //Style the Pixel's background color to the value of currentColor
          this.style.backgroundColor = currentColor;
       }
    })
 }
-
+//Create an array containing all of the elements within the palette container
 var allColors = document.getElementsByClassName("color");
 
+//For each element in the palette container
 for (i = 0; i < allColors.length; i++) {
+   //List for if the user mouse-downs on one of the elements in the palette container,
    allColors[i].addEventListener("mousedown", function() {
-      //Find the background color of clicked element.
-      //DOES NOT WORK.
-      //console.log(this.style.backgroundColor);
-      //Googled "return background color of element javascript". Find other coders are not able to do it this way. One stackoverflow user says "style only gets inline styles. Have a look at getComputedStyle". 
-      //getComputedStyle retrieves the current color -after- CSS stylings from multiple sources
-      //console.log(getComputedStyle(this, null).getPropertyValue("background-color"));
-      //Found out I can shorten it by removing .getPropertyValue() and replacing with .backgroundColor. After reading about it, not entirely sure how they are different, perhaps .getPropertyValue is more precise in some cases?
-      //console.log(getComputedStyle(this, null).backgroundColor);
       //Create variable containing this element's background color
       var newColor = getComputedStyle(this, null).backgroundColor;
       //Update currentColor value
       currentColor = newColor;
-      //Check to see if currentColor is updated
-      console.log(currentColor);
-      //Change color of the cursor
+      //Change color of the cursor element
       cursor.style.backgroundColor = currentColor;
    })
 }
-
 //Third Step: I notice that the 'pixel's only change on a CLICK, when I want it to listen ONLY if the user has their left MOUSE BUTTON DOWN. replace "click" with "mousedown" for the necessarily addEventListener functions.
    //I noticed that changing it from "click" to "mousedown", it didn't seem to work. I still have it set to alerting the user on mouse click, so I'll turn that off to see if it works.
    //Still doesn't work as I intended. It's checking if I press mousedown- when I want to check if I already /have/ my mousedown as I enter the element.
@@ -68,30 +61,27 @@ for (i = 0; i < allColors.length; i++) {
    //Link below contains code doing what I want
    //https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event
 
+//Create a variable containing the board element
 var board = document.getElementsByClassName("board")[0];
+//Set the default "drawing" state to 0, or false
 var drawing = 0;
 
-//Create variable containing cursor
+//Create variable with the element that will follow the cursor containing the current color
 var cursor = document.getElementById("cursor");
+
+//Listen if the user presses down on the board
 board.addEventListener("mousedown", function(event) {
+   //If the user presses down on the board, set the "drawing" state to 1
    drawing = 1;
 });
+//If the user lets go of left-mouse-button on the board, set the drawing state to 0
 board.addEventListener("mouseup", function() {
    drawing = 0;
 });
 
-   //Now I need to check if (drawing == 1) when I mouseover the pixel/cell. Updated Pixel/cell eventListener
-
-//Polishing
-   //Made elements within the page unselectable
-//Bugs: Does not work if user simply clicks on pixel with color selected, because I'm only checking if the user moves their mouse while clicked.
-   //Solution idea: create a new addEventListener ONLY for clicks for pixels.
-   //Solution idea: 
-
-//I want to move the cursor on any movement on the entire page instead of only when user does a mousedown or on mousemove over a pixel.
+//Listen to see if there's any mouse movement on the page, and when there is, move the cursor element's location to the user's cursor location.
 document.addEventListener("mousemove", function() {
+   //-15 to offset the cursor element to be positioned above and to the left of the users cursor
    cursor.style.left = (event.clientX-15)+"px";
    cursor.style.top = (event.clientY-15)+"px";
 });
-
-//Realized I want the cursor always showing instead. Changed CSS and removed code.

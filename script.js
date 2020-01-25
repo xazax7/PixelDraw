@@ -75,23 +75,23 @@ var drawing = 0;
 var cursor = document.getElementById("cursor");
 board.addEventListener("mousedown", function(event) {
    drawing = 1;
-   cursor.style.display = "block";
-   
 });
 board.addEventListener("mouseup", function() {
    drawing = 0;
-   cursor.style.display = "none";
 });
 
    //Now I need to check if (drawing == 1) when I mouseover the pixel/cell. Updated Pixel/cell eventListener
 
 //Polishing
-   //Added a cursor change on mousedown+mouseup
    //Made elements within the page unselectable
 //Bugs: Does not work if user simply clicks on pixel with color selected, because I'm only checking if the user moves their mouse while clicked.
+   //Solution idea: create a new addEventListener ONLY for clicks for pixels.
+   //Solution idea: 
 
 //I want to move the cursor on any movement on the entire page instead of only when user does a mousedown or on mousemove over a pixel.
 document.addEventListener("mousemove", function() {
    cursor.style.left = (event.clientX-15)+"px";
    cursor.style.top = (event.clientY-15)+"px";
-})
+});
+
+//Realized I want the cursor always showing instead. Changed CSS and removed code.
